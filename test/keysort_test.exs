@@ -1,4 +1,4 @@
-defmodule ExercisesChapter3Test do
+defmodule KeysortTest do
   use ExUnit.Case
   use PropCheck
 
