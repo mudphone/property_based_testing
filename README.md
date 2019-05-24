@@ -2,6 +2,10 @@
 
 **TODO: Add description**
 
+## Testing from IEx
+* `iex -S mix`
+* `:proper_gen.pick(:proper_types.list(:proper_types.char()))`
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
