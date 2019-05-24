@@ -9,7 +9,7 @@ defmodule CountWordsTest do
       words =
         list_of_lists
         |> Enum.map(&to_string/1)
-        |> Enum.reject(& &1 == "")
+        |> Enum.reject(&(&1 == ""))
 
       num_words = length(words)
       sentence = Enum.join(words, " ")
@@ -18,9 +18,8 @@ defmodule CountWordsTest do
   end
 
   def non_blank_ascii(), do: range(33, 126)
-  
-  def non_empty_ascii() do
-    let a <- non_empty(list(non_blank_ascii())), do: a
-  end
 
+  def non_empty_ascii() do
+    let(a <- non_empty(list(non_blank_ascii())), do: a)
+  end
 end
