@@ -12,7 +12,7 @@ defmodule KeysortTest do
       Enum.map(0..(min_size - 1), fn index ->
         is_ordered(index, :lists.keysort(index + 1, tup_list))
       end)
-      |> Enum.all?(& &1)
+      |> Enum.all?()
     end
   end
 
