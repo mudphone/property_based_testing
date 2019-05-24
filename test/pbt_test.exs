@@ -26,9 +26,9 @@ defmodule PbtTest do
   end
 
   def model_biggest(list), do: List.last(Enum.sort(list))
-  
+
   def biggest([head | tail]), do: biggest(tail, head)
-  
+
   defp biggest([], max), do: max
 
   defp biggest([head | tail], max) when head >= max do
