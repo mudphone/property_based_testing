@@ -3,18 +3,22 @@ defmodule SetUnionTest do
   use PropCheck
 
   property "set union" do
-    forall {list_a, list_b} <- {list(number()), list(number())} do
-      set_a = MapSet.new(list_a)
-      set_b = MapSet.new(list_b)
-      union_list = MapSet.to_list(MapSet.new(list_a ++ list_b))
-      model_union = Enum.sort(union_list)
+    forall {set_a, set_b} <- {mapset(number()), mapset(number())} do
+      res = MapSet.union(set_a, set_b)
 
-      res =
-        MapSet.union(set_a, set_b)
-        |> MapSet.to_list()
-        |> Enum.sort()
+      res == model_union(set_a, set_b)
+    end
+  end
 
-      res == model_union
+  def model_union(set_a, set_b) do
+    list_a = MapSet.to_list(set_a)
+    list_b = MapSet.to_list(set_b)
+    MapSet.new(list_a ++ list_b)
+  end
+
+  def mapset(mapset_type) do
+    let l <- list(mapset_type) do
+      MapSet.new(l)
     end
   end
 end
