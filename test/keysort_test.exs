@@ -3,13 +3,21 @@ defmodule KeysortTest do
   use PropCheck
 
   property "keysort tuples by index" do
-    forall tup_list <- non_empty(list({integer(), integer(), integer()})) do
-      size = tuple_size(List.first(tup_list))
-      Enum.map(0..(size-1), fn index ->
-        is_ordered(index, :lists.keysort(index+1, tup_list))
+    forall tup_list <- non_empty(list(non_empty_tuple())) do
+      min_size =
+        tup_list
+        |> Enum.map(&tuple_size/1)
+        |> Enum.min()
+
+      Enum.map(0..(min_size - 1), fn index ->
+        is_ordered(index, :lists.keysort(index + 1, tup_list))
       end)
-      |> Enum.all?(&(&1))      
+      |> Enum.all?(& &1)
     end
+  end
+
+  def non_empty_tuple() do
+    such_that(tup <- tuple(), when: tuple_size(tup) != 0)
   end
 
   def is_ordered(index, [a, b | t]) do
