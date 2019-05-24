@@ -3,23 +3,30 @@ defmodule CountWordsTest do
   use PropCheck
 
   property "count words" do
-    forall list_of_lists <- non_empty(list(non_empty_ascii())) do
+    forall list_of_words <- non_empty(list(utf8_word())) do
       space_matcher = ~r/\s+/
 
       words =
-        list_of_lists
-        |> Enum.map(&to_string/1)
+        list_of_words
         |> Enum.reject(&(&1 == ""))
 
-      num_words = length(words)
+      num_words_model = length(words)
+
       sentence = Enum.join(words, " ")
-      num_words == length(String.split(sentence, space_matcher))
+
+      word_count =
+        sentence
+        |> String.split(space_matcher)
+        |> Enum.reject(&(&1 == ""))
+        |> length()
+
+      word_count == num_words_model
     end
   end
 
-  def non_blank_ascii(), do: range(33, 126)
-
-  def non_empty_ascii() do
-    let(a <- non_empty(list(non_blank_ascii())), do: a)
+  def utf8_word() do
+    let s <- PropCheck.BasicTypes.utf8() do
+      Regex.replace(~r/\W+/, s, "")
+    end
   end
 end
